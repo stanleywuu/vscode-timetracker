@@ -1,0 +1,147 @@
+import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
+
+interface KeyNumberPair{
+    [key: string] : TrackerValue
+}
+
+class TrackerValue{
+    total: number;
+    lastTrackedAt: number;
+
+    constructor(){
+        this.total = 0;
+        this.lastTrackedAt = Date.now();
+    }
+
+    update() : number {
+        const now = Date.now();
+        const difference = now - this.lastTrackedAt;
+        this.total += difference;
+
+        return this.total;
+    }
+    
+    resume(){
+        this.lastTrackedAt = Date.now();
+    }
+
+    reset(){
+        this.total = 0;
+        this.lastTrackedAt = 0;
+    }
+};
+
+export class Tracker{
+    private statusItem: vscode.StatusBarItem;
+    private timerId: NodeJS.Timeout | null;
+    private current: TrackerValue;
+    private trackedFiles: KeyNumberPair;
+    private comment: string | undefined;
+    private currentFile: string;
+    private logs: string[];
+    
+    isTracking : boolean;
+
+    constructor(statusItem: vscode.StatusBarItem){
+        this.statusItem = statusItem;
+        this.timerId = null;
+        this.currentFile = '';
+        this.trackedFiles = {};
+        this.current = new TrackerValue();
+        this.logs = [];
+
+        this.isTracking = false;
+    }
+
+    async startTracker(){
+        this.comment = await vscode.window.showInputBox({ prompt:'What are you working on?' } );
+        this.logs.push(`started at : ${Date.now()}`);
+        this.start();
+    }
+
+    resumeTracker(){
+        this.logs.push(`resumed at : ${Date.now()}`);
+        this.start();
+    }
+
+    pauseTracker(){
+        this.isTracking = false;
+        this.statusItem.command = 'vstime.resume';
+        this.statusItem.text = 'Timer Paused';
+
+        this.logs.push(`paused at : ${Date.now()}`);
+
+        if (this.timerId) {
+            clearInterval(this.timerId);
+        }
+    }
+
+    
+    async stopTracker(){
+        this.isTracking = false;
+        
+        if (this.timerId){
+            clearInterval(this.timerId);
+        }
+
+        const finalComment = await vscode.window.showInputBox({ prompt:'Thoughts, comments, notes' } );
+        this.logs.push(`stopped at : ${Date.now()}`);
+
+        this.statusItem.command = 'vstime.start';
+        this.statusItem.text = 'Timer Off';
+        // log to file
+        const values = Object.keys(this.trackedFiles).map((k) =>{
+            return {key: path.parse(k).name, value: this.trackedFiles[k]};
+        });
+
+        const final = {
+            comment: this.comment,
+            total: this.current,
+            breakdowns: values,
+            logs : this.logs,
+        };
+
+        console.log(final);
+    }
+
+    trackChanges(file: string){
+        if (!this.isTracking){
+            return;
+        }
+
+        const lastTracker = this.trackedFiles[this.currentFile] ?? new TrackerValue();
+        // if deactivating, update lastTime.update
+        // if activating, call resume
+        this.logs.push(`stopped at ${Date.now()}`);
+        lastTracker.update();
+        this.trackedFiles[this.currentFile] = lastTracker;
+        
+        const tracker = this.trackedFiles[file] ?? new TrackerValue();
+        this.trackedFiles[file] = tracker;
+
+        this.logs.push(`working with ${file} at ${Date.now()}`);
+        this.currentFile = file;
+        tracker.resume();
+
+    }
+
+    private start() {
+        this.isTracking = true;
+        this.currentFile = vscode.window.activeTextEditor?.document.uri.path ?? '';
+
+        this.current.resume();
+        this.statusItem.command = 'vstime.pause';
+
+        this.timerId = setInterval((() => {
+            const now = Date.now();
+            const total = this.current.update();
+            this.statusItem.text = `${total / 1000} seconds`;
+        }), 1000);
+    }
+
+    private formatTime(seconds: number){
+
+    }
+}

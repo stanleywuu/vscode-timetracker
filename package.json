@@ -10,15 +10,27 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:vstime.helloWorld"
+		"onStartupFinished"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "vstime.helloWorld",
-				"title": "Hello World"
-			}
+				"command": "vstime.start",
+				"title": "Start Tracking"
+			},
+			{
+				"command": "vstime.stop",
+				"title": "End Tracking"
+			},
+			{
+				"command": "vstime.resume",
+				"title": "Resume Tracking"
+			},
+			{
+				"command": "vstime.pause",
+				"title": "Pause Tracking"
+			} 
 		]
 	},
 	"scripts": {
