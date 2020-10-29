@@ -1,12 +1,33 @@
 import * as vscode from 'vscode';
 import * as impl from '../implementations/impelmentation';
+import * as provider from '../implementations/trackeritemTreeProvider';
 
-export function initializeTracker(context: vscode.ExtensionContext){
+function initializeTree(context: vscode.ExtensionContext){
+    const timerProvider = vscode.window.registerTreeDataProvider('today', new provider.TrackerItemTreeProvider());
+    context.subscriptions.push(timerProvider);
+}
+
+export function initialize(context: vscode.ExtensionContext){
+    
+    initializeTracker(context);
+    initializeTree(context);
+
+    let testCommand = vscode.commands.registerCommand('vstime.test', ((p)=> { impl.test();}));
+    context.subscriptions.push(testCommand);
+
+}
+
+function initializeTracker(context: vscode.ExtensionContext){
     const statusBar = initializeStatusBar(context);
     const tracker = new impl.Tracker(statusBar);
 
     let trackStart = vscode.commands.registerCommand('vstime.start', ((p)=> {tracker.startTracker();}));
-    let trackStop = vscode.commands.registerCommand('vstime.stop', (()=> {tracker.stopTracker();}));
+    let trackStop = vscode.commands.registerCommand('vstime.stop', (async ()=> {
+        const results = await tracker.stopTracker();
+        await impl.save(results);
+        tracker.reset();
+    }));
+
     let trackResume = vscode.commands.registerCommand('vstime.resume', (()=> {tracker.resumeTracker();}));
     let trackPause = vscode.commands.registerCommand('vstime.pause', (()=> {tracker.pauseTracker();}));
     

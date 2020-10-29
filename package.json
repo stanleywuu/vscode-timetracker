@@ -16,6 +16,10 @@
 	"contributes": {
 		"commands": [
 			{
+				"command": "vstime.test",
+				"title": "test"
+			},
+			{
 				"command": "vstime.start",
 				"title": "Start Tracking"
 			},
@@ -31,7 +35,28 @@
 				"command": "vstime.pause",
 				"title": "Pause Tracking"
 			} 
-		]
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "trackedActivities",
+					"title": "Activities Tracker",
+					"icon": ""
+				}
+			]
+		},
+		"views": {
+			"trackedActivities": [
+				{
+					"id": "today",
+					"name": "Today"
+				},
+				{
+					"id": "thisweek",
+					"name":"This Week"
+				}
+			]
+		}
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
