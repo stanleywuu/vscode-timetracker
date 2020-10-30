@@ -3,18 +3,27 @@ import * as impl from '../implementations/impelmentation';
 import * as provider from '../implementations/trackeritemTreeProvider';
 
 function initializeTree(context: vscode.ExtensionContext){
-    const timerProvider = vscode.window.registerTreeDataProvider('today', new provider.TrackerItemTreeProvider());
+    const treeprovider = new provider.TrackerItemTreeProvider();
+    const timerProvider = vscode.window.registerTreeDataProvider('today', treeprovider);
+    const refreshCommand = vscode.commands.registerCommand('vstime.refresh', (c)=> { treeprovider.refresh();});
+
     context.subscriptions.push(timerProvider);
+    context.subscriptions.push(refreshCommand);
 }
 
 export function initialize(context: vscode.ExtensionContext){
     
     initializeTracker(context);
     initializeTree(context);
+    initializeContextCommands(context);
 
     let testCommand = vscode.commands.registerCommand('vstime.test', ((p)=> { impl.test();}));
     context.subscriptions.push(testCommand);
+}
 
+function initializeContextCommands(context: vscode.ExtensionContext){
+    const exportcmd = vscode.commands.registerCommand('vstime.export', ((i)=>{}));
+    context.subscriptions.push(exportcmd);
 }
 
 function initializeTracker(context: vscode.ExtensionContext){
@@ -38,7 +47,7 @@ function initializeTracker(context: vscode.ExtensionContext){
 
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor((editor) => { 
         if (editor === vscode.window.activeTextEditor){
-        tracker.trackChanges(editor?.document.uri.path ?? '');}
+        tracker.trackChanges(editor?.document.uri.path ?? 'blank');}
     }));
 }
 

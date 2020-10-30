@@ -1,5 +1,5 @@
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
-import { Tracker } from "../implementations/impelmentation";
+import { formatTime } from "../implementations/impelmentation";
 
 export class TrackerValue{
     total: number;
@@ -33,28 +33,39 @@ export class TrackerValue{
 export interface TimeTrackingResultItem{
     date: string,
     comment: string | undefined,
+    notes: string | undefined,
     total: TrackerValue,
     breakdowns: {key: string, value: TrackerValue}[]
     logs: string[]
 }
 
-export class TimeTrackingSummaryItem extends TreeItem{
+export class TimeTrackingItem extends TreeItem implements IHiearchicalNode{
     private date: string;
     private value: TrackerValue;
-    private children: TimeTrackingBreakdownItem[];
+    private breakdowns: TimeTrackingBreakdownItem[];
+    
+    children: TreeItem[] = [];
 
     get breakdown(): TimeTrackingBreakdownItem[] {
-        return this.children;
+        return this.breakdowns;
     }
 
-    constructor(date: string, value: TrackerValue, children: {key: string, value: TrackerValue}[])
+    constructor(item: TimeTrackingResultItem)
     {
-        super(date, TreeItemCollapsibleState.Collapsed);
-        this.date = date;
-        this.value = value;
-        this.children = children.map(c =>{
+        super('', TreeItemCollapsibleState.Collapsed);
+        this.date = item.date;
+        this.value = item.total;
+
+        this.breakdowns = item.breakdowns.map(c =>{
             return new TimeTrackingBreakdownItem(c.key, c.value);
         });
+        
+        this.label = item.comment;
+        this.children = [this.summary(item), ...this.breakdowns];
+    }
+
+    summary(item: TimeTrackingResultItem) : TimeTrackingSummaryItem {
+        return new TimeTrackingSummaryItem(item.comment ?? "Activity", item.total);
     }
 }
 
@@ -64,5 +75,21 @@ export class TimeTrackingBreakdownItem extends TreeItem{
     constructor(detail: string, value: TrackerValue){
         super(detail);
         this.value = value;
+
+        this.label = `${detail}: ${formatTime(value.total)}`;
+        this.contextValue = 'breakdown';
     }
+}
+
+export class TimeTrackingSummaryItem extends TreeItem{
+    constructor(title: string, value: TrackerValue){
+        super(title, TreeItemCollapsibleState.None);
+
+        this.contextValue = 'summary';
+        this.label = `${formatTime(value.total)}`;
+    }
+}
+
+export interface IHiearchicalNode{
+    children: TreeItem[]
 }

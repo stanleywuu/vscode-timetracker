@@ -34,7 +34,15 @@
 			{
 				"command": "vstime.pause",
 				"title": "Pause Tracking"
-			} 
+			},
+			{
+				"command": "vstime.refresh",
+				"title": "Refresh"
+			},
+			{
+				"command": "vstime.export",
+				"title": "Report"
+			}
 		],
 		"viewsContainers": {
 			"activitybar": [
@@ -54,6 +62,18 @@
 				{
 					"id": "thisweek",
 					"name":"This Week"
+				}
+			]
+		},
+		"menus":{
+			"view/title": [
+				{
+					"command": "vstime.refresh",
+					"group": "navigation"
+				},
+				{
+					"command":"vstime.export",
+					"group": "navigation"
 				}
 			]
 		}

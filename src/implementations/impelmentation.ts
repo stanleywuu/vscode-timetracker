@@ -9,26 +9,24 @@ interface KeyNumberPair {
 const filePath: string = '.vstime';
 
 export async function test () {
-    fs.writeFileSync("~/vstime.txt", "hi");
+    fs.writeFileSync("vstime.txt", "hi");
 }
 
 export async function save(timeTrackingDetail: TimeTrackingResultItem) {
-  const file = filePath;
-  if (fs.existsSync(file)) {
-    const content = fs.readFileSync(file, "utf8");
-    const activitiesTracked = JSON.parse(content === '' ? '{}' : content);
-    const full = [...activitiesTracked, timeTrackingDetail];
-    fs.appendFileSync(filePath, JSON.stringify(full));
-  }
-  const full = [timeTrackingDetail];
-  fs.appendFileSync(filePath, JSON.stringify(full));
+  const activitiesTracked = await load();
+  const full = [...activitiesTracked, timeTrackingDetail];
+
+  await fs.writeFile(filePath, JSON.stringify(full), null, (()=>{}));
 }
 
 export async function load(): Promise<TimeTrackingResultItem[]> {
   const file = filePath;
-  const content = fs.readFileSync(file, "utf8");
-
-  return JSON.parse(content);
+  if (fs.existsSync(file))
+  {
+    const content = fs.readFileSync(file, "utf8");
+    return JSON.parse(content === '' ? '[]' : content);
+  }
+  return [];
 }
 
 export class Tracker {
@@ -63,6 +61,8 @@ export class Tracker {
 
   resumeTracker() {
     this.logs.push(`resumed at : ${Date.now()}`);
+    const currentFile = vscode.window.activeTextEditor?.document.uri.path ?? 'blank';
+    this.trackChanges(currentFile);
     this.start();
   }
 
@@ -73,10 +73,9 @@ export class Tracker {
 
     this.logs.push(`paused at : ${Date.now()}`);
 
-    if (this.timerId) {
-      clearInterval(this.timerId);
-    }
+    this.stopTimer();
   }
+
 
   reset(){
       this.isTracking = false;
@@ -86,9 +85,7 @@ export class Tracker {
   async stopTracker(): Promise<TimeTrackingResultItem> {
     this.isTracking = false;
 
-    if (this.timerId) {
-      clearInterval(this.timerId);
-    }
+    this.stopTimer();
 
     const finalComment = await vscode.window.showInputBox({
       prompt: "Thoughts, comments, notes",
@@ -98,13 +95,16 @@ export class Tracker {
     this.statusItem.command = "vstime.start";
     this.statusItem.text = "Timer Off";
     // log to file
-    const values = Object.keys(this.trackedFiles).map((k) => {
+    const values = Object.keys(this.trackedFiles)
+    .map((k) => {
       return { key: path.parse(k).name, value: this.trackedFiles[k] };
-    });
+    })
+    .filter(f => f.value.total > 0);
 
     const final: TimeTrackingResultItem = {
-      date: Date.now().toString(),
+      date: getToday().getTime().toString(),
       comment: this.comment,
+      notes: finalComment,
       total: this.current,
       breakdowns: values,
       logs: this.logs,
@@ -135,10 +135,23 @@ export class Tracker {
     this.currentFile = file;
     tracker.resume();
   }
+  
+  private trackCurrentFile(){
+    this.currentFile = vscode.window.activeTextEditor?.document.uri.path ?? "blank";
+    this.trackChanges(this.currentFile);
+  }
+  
+  private stopTimer() {
+    this.trackCurrentFile();
+
+    if (this.timerId) {
+      clearInterval(this.timerId);
+    }
+  }
 
   private start() {
     this.isTracking = true;
-    this.currentFile = vscode.window.activeTextEditor?.document.uri.path ?? "";
+    this.trackCurrentFile();
 
     this.current.resume();
     this.statusItem.command = "vstime.pause";
@@ -146,14 +159,21 @@ export class Tracker {
     this.timerId = setInterval(() => {
       const now = Date.now();
       const total = this.current.update();
-      this.statusItem.text = `${this.formatTime(total / 1000)}`;
+      this.statusItem.text = `${formatTime(total / 1000)}`;
     }, 1000);
   }
 
-  private formatTime(seconds: number) {
-    const hours = Math.round(seconds / 60 / 60);
-    const minutes = Math.round(seconds / 60) - hours * 60;
-    const secondsLeft = Math.round(seconds - hours * 60 * 60 - minutes * 60);
+}
+
+  export function getToday() : Date{
+    const now = new Date();
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  }
+  
+  export function formatTime(seconds: number) {
+    const hours = Math.floor(seconds / 60 / 60 / 1000);
+    const minutes = Math.floor(seconds / 60 / 1000) - hours * 60;
+    const secondsLeft = Math.round(seconds/1000 - hours * 60 * 60 - minutes * 60);
 
     const hourStr = hours.toString().padStart(2, '0');
     const minutesStr = minutes.toString().padStart(2, '0');
@@ -161,4 +181,4 @@ export class Tracker {
 
     return `${hourStr}:${minutesStr}:${secondsStr}`;
   }
-}
+
