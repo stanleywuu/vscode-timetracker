@@ -2,6 +2,7 @@
   "name": "vstime",
 	"displayName": "vstime",
 	"description": "A VS Code extension to keep track of time",
+	"publisher":"swuvsmarket",
 	"version": "0.0.1",
 	"engines": {
 		"vscode": "^1.50.0"
