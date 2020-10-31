@@ -13,6 +13,7 @@ function initializeTree(context: vscode.ExtensionContext){
 
 export function initialize(context: vscode.ExtensionContext){
     
+    impl.setStoragePath(context.globalStorageUri.fsPath);
     initializeTracker(context);
     initializeTree(context);
     initializeContextCommands(context);
