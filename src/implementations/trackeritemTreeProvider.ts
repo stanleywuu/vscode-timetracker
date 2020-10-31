@@ -1,11 +1,18 @@
 import * as vscode from 'vscode';
 import * as tracker from '../implementations/impelmentation';
 
-import {TrackerValue, TimeTrackingResultItem, TimeTrackingItem} from '../models/trackerValues';
+import {TrackerValue, TimeTrackingResultItem, TimeTrackingItem, TimeTrackingBreakdownItem} from '../models/trackerValues';
 
 export class TrackerItemTreeProvider implements vscode.TreeDataProvider<vscode.TreeItem>{
     private _onDidChangeTreeData: vscode.EventEmitter<vscode.TreeItem | null> = new vscode.EventEmitter<vscode.TreeItem | null>();
     readonly onDidChangeTreeData: vscode.Event<vscode.TreeItem | null > = this._onDidChangeTreeData.event;
+
+    private tracker: tracker.Tracker;
+
+    constructor(tracker: tracker.Tracker)
+    {
+        this.tracker = tracker;
+    }
 
     refresh() {
 		this._onDidChangeTreeData.fire(null);
@@ -19,6 +26,7 @@ export class TrackerItemTreeProvider implements vscode.TreeDataProvider<vscode.T
         if (element){
             return (element as TimeTrackingItem).children;
         }
+        
         return this.getChildrenItem(element);
     }
     
@@ -31,7 +39,8 @@ export class TrackerItemTreeProvider implements vscode.TreeDataProvider<vscode.T
                     .filter((t) => t.date === todayStr) ;
 
             const results: vscode.TreeItem[] = items.map(i => new TimeTrackingItem(i));
-            return results;
+            const current: vscode.TreeItem[] = this.tracker.currentProgress.map(i => new TimeTrackingItem(i));
+            return [...current,...results];
         }
 
         const child = element as TimeTrackingItem;

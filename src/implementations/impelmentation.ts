@@ -66,6 +66,23 @@ export class Tracker {
     this.isTracking = false;
   }
 
+  get currentProgress() : TimeTrackingResultItem[]{
+    if (!this.isTracking) {
+      return [];
+    }
+
+    return [
+       {
+        date: getToday().getTime().toString(),
+        comment: 'current',
+        notes: '',
+        total: this.current,
+        breakdowns: [],
+        logs: []
+      }
+    ];
+  }
+
   async startTracker() {
     this.comment = await vscode.window.showInputBox({
       prompt: "What are you working on?",

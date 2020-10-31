@@ -2,8 +2,8 @@ import * as vscode from 'vscode';
 import * as impl from '../implementations/impelmentation';
 import * as provider from '../implementations/trackeritemTreeProvider';
 
-function initializeTree(context: vscode.ExtensionContext){
-    const treeprovider = new provider.TrackerItemTreeProvider();
+function initializeTree(context: vscode.ExtensionContext, tracker: impl.Tracker){
+    const treeprovider = new provider.TrackerItemTreeProvider(tracker);
     const timerProvider = vscode.window.registerTreeDataProvider('today', treeprovider);
     const refreshCommand = vscode.commands.registerCommand('vstime.refresh', (c)=> { treeprovider.refresh();});
 
@@ -14,8 +14,8 @@ function initializeTree(context: vscode.ExtensionContext){
 export function initialize(context: vscode.ExtensionContext){
     
     impl.setStoragePath(context.globalStorageUri.fsPath);
-    initializeTracker(context);
-    initializeTree(context);
+    const tracker = initializeTracker(context);
+    initializeTree(context, tracker);
     initializeContextCommands(context);
 
     let testCommand = vscode.commands.registerCommand('vstime.test', ((p)=> { impl.test();}));
@@ -27,7 +27,7 @@ function initializeContextCommands(context: vscode.ExtensionContext){
     context.subscriptions.push(exportcmd);
 }
 
-function initializeTracker(context: vscode.ExtensionContext){
+function initializeTracker(context: vscode.ExtensionContext) : impl.Tracker{
     const statusBar = initializeStatusBar(context);
     const tracker = new impl.Tracker(statusBar);
 
@@ -50,6 +50,8 @@ function initializeTracker(context: vscode.ExtensionContext){
         if (editor === vscode.window.activeTextEditor){
         tracker.trackChanges(editor?.document.uri.path ?? 'blank');}
     }));
+
+    return tracker;
 }
 
  function initializeStatusBar(context: vscode.ExtensionContext): vscode.StatusBarItem{
