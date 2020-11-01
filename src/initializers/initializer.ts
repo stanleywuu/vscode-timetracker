@@ -32,7 +32,7 @@ function initializeTree(context: vscode.ExtensionContext, tracker: impl.Tracker)
         return t.date >= startDayVal && t.date < todayVal;
      };
 
-    const weeklyTreeProvider = new provider.TrackerItemTreeProvider(new impl.EmptyTracker(), );
+    const weeklyTreeProvider = new provider.TrackerItemTreeProvider(new impl.EmptyTracker(), weeklyFilter);
     const weekProvider = vscode.window.registerTreeDataProvider('thisweek', weeklyTreeProvider);
 
     const refreshCommand = vscode.commands.registerCommand('vstime.refresh', (c)=> { treeprovider.refresh();});

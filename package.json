@@ -70,7 +70,8 @@
 			"view/title": [
 				{
 					"command": "vstime.refresh",
-					"group": "navigation"
+					"group": "navigation",
+					"when": "view == today"
 				},
 				{
 					"command": "vstime.export",
