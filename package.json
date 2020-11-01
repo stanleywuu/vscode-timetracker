@@ -1,5 +1,5 @@
 {
-  "name": "vstime",
+	"name": "vstime",
 	"displayName": "vstime",
 	"description": "A VS Code extension to keep track of time",
 	"version": "0.0.1",
@@ -61,18 +61,18 @@
 				},
 				{
 					"id": "thisweek",
-					"name":"This Week"
+					"name": "This Week"
 				}
 			]
 		},
-		"menus":{
+		"menus": {
 			"view/title": [
 				{
 					"command": "vstime.refresh",
 					"group": "navigation"
 				},
 				{
-					"command":"vstime.export",
+					"command": "vstime.export",
 					"group": "navigation"
 				}
 			]

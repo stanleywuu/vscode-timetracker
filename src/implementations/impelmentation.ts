@@ -6,21 +6,36 @@ import { TrackerValue, TimeTrackingResultItem } from "../models/trackerValues";
 interface KeyNumberPair {
   [key: string]: TrackerValue;
 }
-const filePath: string = '.vstime';
+
+const filePath = function(){
+  return storagePath;
+};
+
+let storagePath: string = '';
 
 export async function test () {
-    fs.writeFileSync("vstime.txt", "hi");
+    console.log(vscode.env.appName);
+    console.log(vscode.env.appRoot);
+    const config = vscode.workspace.getConfiguration("vstime");
+    
+    fs.writeFileSync(filePath(), "[]");
+}
+
+export function setStoragePath(contextPath: string){
+  const targetPath = path.join(contextPath,'.vstime');
+  if (!fs.existsSync(path.dirname(targetPath))){ fs.mkdirSync(path.dirname(targetPath));}
+  storagePath = targetPath;
 }
 
 export async function save(timeTrackingDetail: TimeTrackingResultItem) {
   const activitiesTracked = await load();
   const full = [...activitiesTracked, timeTrackingDetail];
 
-  await fs.writeFile(filePath, JSON.stringify(full), null, (()=>{}));
+  await fs.writeFile(filePath(), JSON.stringify(full), null, (()=>{}));
 }
 
 export async function load(): Promise<TimeTrackingResultItem[]> {
-  const file = filePath;
+  const file = filePath();
   if (fs.existsSync(file))
   {
     const content = fs.readFileSync(file, "utf8");
@@ -159,7 +174,7 @@ export class Tracker {
     this.timerId = setInterval(() => {
       const now = Date.now();
       const total = this.current.update();
-      this.statusItem.text = `${formatTime(total / 1000)}`;
+      this.statusItem.text = `${formatTime(total)}`;
     }, 1000);
   }
 
