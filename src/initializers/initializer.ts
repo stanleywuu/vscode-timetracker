@@ -1,20 +1,44 @@
 import * as vscode from 'vscode';
 import * as impl from '../implementations/impelmentation';
 import * as provider from '../implementations/trackeritemTreeProvider';
+import { TimeTrackingResultItem } from '../models/trackerValues';
 
 function initializeTree(context: vscode.ExtensionContext, tracker: impl.Tracker){
     const treeprovider = new provider.TrackerItemTreeProvider(tracker);
-    const timerProvider = vscode.window.registerTreeDataProvider('today', treeprovider);
-    const refreshCommand = vscode.commands.registerCommand('vstime.refresh', (c)=> { treeprovider.refresh();});
+    const todayProvider = vscode.window.registerTreeDataProvider('today', treeprovider);
 
-    context.subscriptions.push(timerProvider);
+    const weeklyFilter = (t: TimeTrackingResultItem) : boolean =>{
+        const today = impl.getToday();
+        const todayVal = today.getTime();
+        const lastWeek = impl.getToday();
+        lastWeek.setDate(today.getDate() - 7);
+
+        const startDayVal = lastWeek.getTime();
+
+        return t.date >= startDayVal && t.date < todayVal;
+     };
+
+    const weeklyTreeProvider = new provider.TrackerItemTreeProvider(new impl.EmptyTracker(), );
+    const weekProvider = vscode.window.registerTreeDataProvider('thisweek', weeklyTreeProvider);
+
+    const refreshCommand = vscode.commands.registerCommand('vstime.refresh', (c)=> { treeprovider.refresh();});
+    const reportCommand = vscode.commands.registerCommand('vstime.export', (c) => 
+    {console.log(c);});
+
+    context.subscriptions.push(todayProvider);
     context.subscriptions.push(refreshCommand);
+    context.subscriptions.push(reportCommand);
+
+    context.subscriptions.push(weekProvider);
 }
 
 export function initialize(context: vscode.ExtensionContext){
     
     impl.setStoragePath(context.globalStorageUri.fsPath);
+    console.log(context.globalStorageUri.fsPath);
+
     const tracker = initializeTracker(context);
+
     initializeTree(context, tracker);
     initializeContextCommands(context);
 

@@ -73,7 +73,7 @@ export class Tracker {
 
     return [
        {
-        date: getToday().getTime().toString(),
+        date: getToday().getTime(),
         comment: 'current',
         notes: '',
         total: this.current,
@@ -134,7 +134,7 @@ export class Tracker {
     .filter(f => f.value.total > 0);
 
     const final: TimeTrackingResultItem = {
-      date: getToday().getTime().toString(),
+      date: getToday().getTime(),
       comment: this.comment,
       notes: finalComment,
       total: this.current,
@@ -195,6 +195,12 @@ export class Tracker {
     }, 1000);
   }
 
+}
+
+export class EmptyTracker extends Tracker{
+  constructor() {
+    super(vscode.window.createStatusBarItem());
+  }
 }
 
   export function getToday() : Date{

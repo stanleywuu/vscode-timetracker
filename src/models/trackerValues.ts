@@ -31,7 +31,7 @@ export class TrackerValue{
 
 
 export interface TimeTrackingResultItem{
-    date: string,
+    date: number,
     comment: string | undefined,
     notes: string | undefined,
     total: TrackerValue,
@@ -40,7 +40,7 @@ export interface TimeTrackingResultItem{
 }
 
 export class TimeTrackingItem extends TreeItem implements IHiearchicalNode{
-    private date: string;
+    private date: number;
     private value: TrackerValue;
     private breakdowns: TimeTrackingBreakdownItem[];
     
