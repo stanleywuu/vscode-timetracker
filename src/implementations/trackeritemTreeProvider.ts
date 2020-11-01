@@ -38,11 +38,9 @@ export class TrackerItemTreeProvider implements vscode.TreeDataProvider<vscode.T
     
     async getChildrenItem(element?: vscode.TreeItem) : Promise<vscode.TreeItem[]>{
         if (!element){
-            const todayStr = trackerImpl.getToday().getTime();
-
             const items = 
                 await (await trackerImpl.load())
-                    .filter((t) => t.date === todayStr) ;
+                    .filter((t) => this.filter(t)) ;
 
             const results: vscode.TreeItem[] = items.map(i => new TimeTrackingItem(i));
             const current: vscode.TreeItem[] = this.tracker.currentProgress.map(i => new TimeTrackingItem(i));
