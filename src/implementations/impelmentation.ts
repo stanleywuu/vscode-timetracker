@@ -93,7 +93,7 @@ export class Tracker {
 
   resumeTracker() {
     this.logs.push(`resumed at : ${Date.now()}`);
-    const currentFile = vscode.window.activeTextEditor?.document.uri.path ?? 'blank';
+    const currentFile = vscode.window.activeTextEditor?.document.uri.path ?? 'Untitled';
     this.trackChanges(currentFile);
     this.start();
   }

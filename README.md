@@ -1,6 +1,8 @@
 # vstime README
 
-This is the README for your extension "vstime". After writing up a brief description, we recommend including the following sections.
+vstime is a VS Code Extension used to provide some simplistic time tracking as you work inside Visual Studio Code
+The goal is to make time tracking accessible, right within your editor.
+The extension is best for people who spends a lot of time in Visual Studio Code
 
 ## Features
 

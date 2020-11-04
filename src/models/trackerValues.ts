@@ -60,7 +60,9 @@ export class TimeTrackingItem extends TreeItem implements IHiearchicalNode{
             return new TimeTrackingBreakdownItem(c.key, c.value);
         });
         
-        this.label = item.comment;
+        const defaultComment = new Date(item.date).toLocaleDateString();
+        this.label = item.comment ? item.comment === '' ? defaultComment : item.comment
+            : defaultComment;
         this.children = [this.summary(item), ...this.breakdowns];
     }
 
