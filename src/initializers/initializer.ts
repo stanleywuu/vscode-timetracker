@@ -4,7 +4,7 @@ import * as provider from '../implementations/trackeritemTreeProvider';
 import { TimeTrackingResultItem } from '../models/trackerValues';
 import * as reporting from '../implementations/reporting';
 
-export function initialize(context: vscode.ExtensionContext){
+export function initialize(context: vscode.ExtensionContext) : impl.Tracker{
     
     impl.setStoragePath(context.globalStorageUri.fsPath);
     console.log(context.globalStorageUri.fsPath);
@@ -16,6 +16,8 @@ export function initialize(context: vscode.ExtensionContext){
 
     let testCommand = vscode.commands.registerCommand('vstime.test', ((p)=> { impl.test();}));
     context.subscriptions.push(testCommand);
+
+    return tracker;
 }
 
 function initializeTree(context: vscode.ExtensionContext, tracker: impl.Tracker){
