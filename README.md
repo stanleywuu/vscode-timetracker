@@ -7,11 +7,12 @@ The extension is best for people who spends a lot of time in Visual Studio Code
 ## Features
 
 * Time Tracking with notes
+* Tracking of the current ongoing task
 * Ability to Pause
 * Detailed breakdown of time spent in different files
 * Report of usage
 
-\!\[feature X\]\(images/feature-x.png\)
+![Demo](images/demo.gif)
 
 ## Why do I want to try it
 Tracking time helps you by:

@@ -87,6 +87,7 @@ export class Tracker {
     this.comment = await vscode.window.showInputBox({
       prompt: "What are you working on?",
     });
+    this.reset();
     this.start();
     this.trackCurrentFile();
   }
@@ -115,10 +116,10 @@ export class Tracker {
   }
 
   async stopTracker(): Promise<TimeTrackingResultItem> {
-    this.isTracking = false;
 
     this.stopTimer();
 
+    this.isTracking = false;
     const finalComment = await vscode.window.showInputBox({
       prompt: "Thoughts, comments, notes",
     });
