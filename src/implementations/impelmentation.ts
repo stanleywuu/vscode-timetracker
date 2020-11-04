@@ -74,10 +74,10 @@ export class Tracker {
     return [
        {
         date: getToday().getTime(),
-        comment: 'current',
+        comment: 'Current',
         notes: '',
         total: this.current,
-        breakdowns: [],
+        breakdowns: this.getBreakdownInfo(),
         logs: []
       }
     ];
@@ -87,8 +87,8 @@ export class Tracker {
     this.comment = await vscode.window.showInputBox({
       prompt: "What are you working on?",
     });
-    this.logs.push(`started at : ${Date.now()}`);
     this.start();
+    this.trackCurrentFile();
   }
 
   resumeTracker() {
@@ -127,15 +127,7 @@ export class Tracker {
     this.statusItem.command = "vstime.start";
     this.statusItem.text = "Timer Off";
     // log to file
-    const values = Object.keys(this.trackedFiles)
-    .map((k) => {
-      const key = path.parse(k).name;
-      const extension = path.parse(k).ext;
-      return { 
-        key: `${key}${extension}`, 
-        value: this.trackedFiles[k] };
-    })
-    .filter(f => f.value.total > 0);
+    const values = this.getBreakdownInfo();
 
     const final: TimeTrackingResultItem = {
       date: getToday().getTime(),
@@ -149,6 +141,19 @@ export class Tracker {
     console.log(final);
 
     return final;
+  }
+
+  private getBreakdownInfo() {
+    return Object.keys(this.trackedFiles)
+      .map((k) => {
+        const key = path.parse(k).name;
+        const extension = path.parse(k).ext;
+        return {
+          key: `${key}${extension}`,
+          value: this.trackedFiles[k]
+        };
+      })
+      .filter(f => f.value.total > 0);
   }
 
   trackChanges(file: string) {
@@ -173,7 +178,7 @@ export class Tracker {
   }
   
   private trackCurrentFile(){
-    this.currentFile = vscode.window.activeTextEditor?.document.uri.path ?? "blank";
+    this.currentFile = vscode.window.activeTextEditor?.document.uri.path ?? "Untitled";
     this.trackChanges(this.currentFile);
   }
   

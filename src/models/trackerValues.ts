@@ -88,7 +88,7 @@ export class TimeTrackingSummaryItem extends TreeItem{
         super(title, TreeItemCollapsibleState.None);
 
         this.contextValue = 'summary';
-        this.label = `${formatTime(value.total)}`;
+        this.label = `Total: ${formatTime(value.total)}`;
     }
 }
 

@@ -71,7 +71,7 @@ function initializeTracker(context: vscode.ExtensionContext) : impl.Tracker{
     context.subscriptions.push(trackPause);
 
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor((editor) => { 
-        if (editor === vscode.window.activeTextEditor){
+        if (editor && editor === vscode.window.activeTextEditor){
         tracker.trackChanges(editor?.document.uri.path ?? 'Untitled');}
     }));
 
