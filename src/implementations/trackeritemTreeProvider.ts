@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as trackerImpl from '../implementations/impelmentation';
+import * as trackerImpl from './implementation';
 
 import {TrackerValue, TimeTrackingResultItem, TimeTrackingItem, TimeTrackingBreakdownItem} from '../models/trackerValues';
 

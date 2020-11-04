@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { Tracker } from './implementations/impelmentation';
+import { Tracker } from './implementations/implementation';
 import * as initilizers from './initializers/initializer';
 
 let tracker : Tracker;

@@ -1,5 +1,5 @@
 import { TreeItem, TreeItemCollapsibleState } from "vscode";
-import { formatTime } from "../implementations/impelmentation";
+import { formatTime } from "../implementations/implementation";
 
 export class TrackerValue{
     total: number;

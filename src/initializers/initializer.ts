@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import * as impl from '../implementations/impelmentation';
+import * as impl from '../implementations/implementation';
 import * as provider from '../implementations/trackeritemTreeProvider';
 import { TimeTrackingResultItem } from '../models/trackerValues';
 import * as reporting from '../implementations/reporting';

@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { TimeTrackingResultItem } from '../models/trackerValues';
-import { formatTime, load, Tracker } from './impelmentation';
+import { formatTime, load, Tracker } from './implementation';
 
 class DateValue{
     date: Date;

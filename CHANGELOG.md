@@ -2,8 +2,9 @@
 
 All notable changes to the "vstime" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
+## Released
+## 0.2.0
+- Fixed up a reset issue where previous time logs got carried over
 ## [Unreleased]
 ### 0.0.2
 - Updating meta data (images)
