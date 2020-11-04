@@ -14,6 +14,17 @@ The extension is best for people who spends a lot of time in Visual Studio Code
 
 ![Demo](images/demo.gif)
 
+## How to use
+* Ctrl + Shift + P
+* Start Tracking
+* Pause Tracking
+  * You can also pause by clicking the status bar item 
+* Resume Tracking
+  * You can also resume by clicking the status bar item 
+* End Tracking
+  
+![How to](images/howto.gif)
+
 ## Why do I want to try it
 Tracking time helps you by:
 * Keeping you focused on a single task
