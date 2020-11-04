@@ -50,7 +50,7 @@
 				{
 					"id": "trackedActivities",
 					"title": "Activities Tracker",
-					"icon": ""
+					"icon": "res/icon.svg"
 				}
 			]
 		},
