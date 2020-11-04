@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { TimeTrackingResultItem } from '../models/trackerValues';
-import { formatTime, Tracker } from './impelmentation';
+import { formatTime, load, Tracker } from './impelmentation';
 
 class DateValue{
     date: Date;
@@ -41,13 +41,13 @@ export class Report{
             report += `${total.date.toDateString()}\nTotal: ${formatTime(total.total)}\n`;
 
             t.forEach(detail =>{
-                report += `${formatTime(detail.total.total)}: ${detail.comment}`;
+                report += `${formatTime(detail.total.total)}: ${detail.comment}\n`;
                   detail.breakdowns.forEach(b =>{
                        report += `  Spent ${formatTime(b.value.total)} in ${b.key}\n`;
                   });
                 
                 if (detail.notes){
-                    report += `    Notes: ${detail.notes}`;
+                    report += `    Notes: ${detail.notes}\n\n`;
                 }
             });
         }
@@ -71,5 +71,10 @@ export class Report{
             return accum;
         }, []);
     }
+}
 
+export async function getReports(){
+    const results = await load();
+    const reportContent = new Report(results).report();
+    vscode.workspace.openTextDocument({content: reportContent}).then((doc)=> vscode.window.showTextDocument(doc));
 }

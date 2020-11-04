@@ -129,7 +129,11 @@ export class Tracker {
     // log to file
     const values = Object.keys(this.trackedFiles)
     .map((k) => {
-      return { key: path.parse(k).name, value: this.trackedFiles[k] };
+      const key = path.parse(k).name;
+      const extension = path.parse(k).ext;
+      return { 
+        key: `${key}${extension}`, 
+        value: this.trackedFiles[k] };
     })
     .filter(f => f.value.total > 0);
 

@@ -2,6 +2,7 @@ import * as vscode from 'vscode';
 import * as impl from '../implementations/impelmentation';
 import * as provider from '../implementations/trackeritemTreeProvider';
 import { TimeTrackingResultItem } from '../models/trackerValues';
+import * as reporting from '../implementations/reporting';
 
 export function initialize(context: vscode.ExtensionContext){
     
@@ -44,7 +45,7 @@ function initializeTree(context: vscode.ExtensionContext, tracker: impl.Tracker)
 }
 
 function initializeContextCommands(context: vscode.ExtensionContext){
-    const exportcmd = vscode.commands.registerCommand('vstime.export', ((i)=>{}));
+    const exportcmd = vscode.commands.registerCommand('vstime.export', ((i)=>{ reporting.getReports();}));
     context.subscriptions.push(exportcmd);
 }
 
