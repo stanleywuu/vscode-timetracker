@@ -1,6 +1,6 @@
 {
 	"name": "vstime",
-	"displayName": "vstime",
+	"displayName": "vstime - A time tracking assistant for your VS Code day",
 	"description": "A VS Code extension to keep track of time",
 	"publisher":"swuvsmarket",
 	"license": "SEE LICENSE IN LICENSE.txt",
@@ -12,7 +12,7 @@
 		"type": "git",
 		"url":"https://github.com/stanleywuu/vscode-timetracker.git"
 	},
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"engines": {
 		"vscode": "^1.50.0"
 	},
