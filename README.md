@@ -12,7 +12,7 @@ The extension is best for people who spends a lot of time in Visual Studio Code
 * Detailed breakdown of time spent in different files
 * Report of usage
 
-![Demo](https://github.com/stanleywuu/vscode-timetracker/blob/main/images/demo.gif)
+![Demo](images/demo.gif)
 
 ## Why do I want to try it
 Tracking time helps you by:
