@@ -15,7 +15,7 @@ The extension is best for people who spends a lot of time in Visual Studio Code
 ![Demo](images/demo.gif)
 
 ## How to use
-* Ctrl + Shift + P
+* Ctrl + Shift + P and use the following commands
 * Start Tracking
 * Pause Tracking
   * You can also pause by clicking the status bar item 
