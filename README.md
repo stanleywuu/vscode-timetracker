@@ -33,10 +33,3 @@ Tracking time helps you by:
 ## Known Issues
 * Records are global, which means they are not workspace specific
 * Currently there is no roll over, the log file grows indefinitely
-
-## Release Notes
-
-
-### 0.0.1
-
-Initial release of vstime
