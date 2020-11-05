@@ -3,7 +3,12 @@
 	"displayName": "vstime - A time tracking assistant for your VS Code day",
 	"description": "A VS Code extension to keep track of time",
 	"publisher": "swuvsmarket",
-	"keywords": ["time", "standup", "track", "task"],
+	"keywords": [
+		"time",
+		"standup",
+		"track",
+		"task"
+	],
 	"license": "SEE LICENSE IN LICENSE.txt",
 	"homepage": "https://github.com/stanleywuu/vscode-timetracker/blob/main/README.md",
 	"bugs": {
@@ -13,7 +18,7 @@
 		"type": "git",
 		"url": "https://github.com/stanleywuu/vscode-timetracker.git"
 	},
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"engines": {
 		"vscode": "^1.50.0"
 	},
