@@ -31,19 +31,19 @@
 			},
 			{
 				"command": "vstime.start",
-				"title": "Start Tracking"
+				"title": "vstime: Start Tracking"
 			},
 			{
 				"command": "vstime.stop",
-				"title": "End Tracking"
+				"title": "vstime: End Tracking"
 			},
 			{
 				"command": "vstime.resume",
-				"title": "Resume Tracking"
+				"title": "vstime: Resume Tracking"
 			},
 			{
 				"command": "vstime.pause",
-				"title": "Pause Tracking"
+				"title": "vstime: Pause Tracking"
 			},
 			{
 				"command": "vstime.refresh",
