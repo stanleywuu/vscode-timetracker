@@ -1,0 +1,1 @@
+vsce publish --githubBranch main $0

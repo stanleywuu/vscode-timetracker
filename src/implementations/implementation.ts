@@ -74,7 +74,7 @@ export class Tracker {
     return [
        {
         date: getToday().getTime(),
-        comment: 'Current',
+        comment: (!this.comment || this.comment === '') ? 'Current' : `Current: ${this.comment}`,
         notes: '',
         total: this.current,
         breakdowns: this.getBreakdownInfo(),
