@@ -6,16 +6,13 @@ import * as reporting from '../implementations/reporting';
 
 export function initialize(context: vscode.ExtensionContext) : impl.Tracker{
     
+    // register where we can keep our data
     impl.setStoragePath(context.globalStorageUri.fsPath);
-    console.log(context.globalStorageUri.fsPath);
 
     const tracker = initializeTracker(context);
 
     initializeTree(context, tracker);
     initializeContextCommands(context);
-
-    let testCommand = vscode.commands.registerCommand('vstime.test', ((p)=> { impl.test();}));
-    context.subscriptions.push(testCommand);
 
     return tracker;
 }
@@ -70,6 +67,7 @@ function initializeTracker(context: vscode.ExtensionContext) : impl.Tracker{
     context.subscriptions.push(trackResume);
     context.subscriptions.push(trackPause);
 
+    // Set up when user switches tabs on vscode
     context.subscriptions.push(vscode.window.onDidChangeActiveTextEditor((editor) => { 
         if (editor && editor === vscode.window.activeTextEditor){
         tracker.trackChanges(editor?.document.uri.path ?? 'Untitled');}
