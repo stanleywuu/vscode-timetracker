@@ -45,7 +45,12 @@ function initializeTree(context: vscode.ExtensionContext, tracker: impl.Tracker)
 
 function initializeContextCommands(context: vscode.ExtensionContext){
     const exportcmd = vscode.commands.registerCommand('vstime.export', ((i)=>{ reporting.getReports();}));
+    const opencmd = vscode.commands.registerCommand('vstime.open', ((i)=>{ impl.open();}));
+    const resetcmd = vscode.commands.registerCommand('vstime.reset', ((i)=>{ impl.reset();}));
+
     context.subscriptions.push(exportcmd);
+    context.subscriptions.push(opencmd);
+    context.subscriptions.push(resetcmd);
 }
 
 function initializeTracker(context: vscode.ExtensionContext) : impl.Tracker{

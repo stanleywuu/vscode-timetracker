@@ -22,7 +22,8 @@ export async function test () {
 }
 
 export function setStoragePath(contextPath: string){
-  const targetPath = path.join(contextPath,'.vstime');
+  const targetPath = path.join(contextPath,'vstime.vstime');
+  console.log(targetPath);
   if (!fs.existsSync(path.dirname(targetPath))){ fs.mkdirSync(path.dirname(targetPath));}
   storagePath = targetPath;
 }
@@ -42,6 +43,17 @@ export async function load(): Promise<TimeTrackingResultItem[]> {
     return JSON.parse(content === '' ? '[]' : content);
   }
   return [];
+}
+
+export async function open() {
+    vscode.window.showTextDocument(vscode.Uri.parse(storagePath));
+}
+
+export async function reset() {
+  if (fs.existsSync(storagePath)){
+    fs.copyFileSync(storagePath, storagePath + new Date().getTime());
+    fs.writeFileSync(storagePath, '');
+  }
 }
 
 export class Tracker {

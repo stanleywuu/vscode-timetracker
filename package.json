@@ -58,6 +58,14 @@
 			{
 				"command": "vstime.export",
 				"title": "Report"
+			},
+			{
+				"command": "vstime.reset",
+				"title": "vstime: Reset Logs"
+			},
+			{
+				"command": "vstime.open",
+				"title": "vstime: Open Current Logs"
 			}
 		],
 		"viewsContainers": {
@@ -90,7 +98,8 @@
 				},
 				{
 					"command": "vstime.export",
-					"group": "navigation"
+					"group": "navigation",
+					"when": "view == today || view == thisweek"
 				}
 			]
 		}
