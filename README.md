@@ -22,6 +22,11 @@ The extension is best for people who spends a lot of time in Visual Studio Code
 * Resume Tracking
   * You can also resume by clicking the status bar item 
 * End Tracking
+* Open Logs
+  * You can view the raw log from here, the logs are stored at your vscode directory
+    * For example, on linux it would be ~/.config/Code/User/globalStorage/swuvsmarket.vstime
+* Reset Logs
+  * Makes a copy of the current log and clear
   
 ![How to](images/howto.gif)
 
