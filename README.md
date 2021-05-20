@@ -38,3 +38,4 @@ Tracking time helps you by:
 ## Known Issues
 * Records are global, which means they are not workspace specific
 * Currently there is no roll over, the log file grows indefinitely
+* Open Log file command doesn't work on Windows, will address soon

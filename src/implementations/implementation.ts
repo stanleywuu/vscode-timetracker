@@ -22,7 +22,7 @@ export async function test () {
 }
 
 export function setStoragePath(contextPath: string){
-  const targetPath = path.join(contextPath,'vstime.vstime');
+  const targetPath = path.join(contextPath,'.vstime');
   console.log(targetPath);
   if (!fs.existsSync(path.dirname(targetPath))){ fs.mkdirSync(path.dirname(targetPath));}
   storagePath = targetPath;
