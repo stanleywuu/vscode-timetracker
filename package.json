@@ -18,7 +18,7 @@
 		"type": "git",
 		"url": "https://github.com/stanleywuu/vscode-timetracker.git"
 	},
-	"version": "0.3.6",
+	"version": "0.3.7",
 	"engines": {
 		"vscode": "^1.50.0"
 	},
@@ -84,6 +84,10 @@
 					"name": "Today"
 				},
 				{
+					"id": "yesterday",
+					"name": "Yesterday"
+				},
+				{
 					"id": "thisweek",
 					"name": "This Week"
 				}
@@ -99,7 +103,17 @@
 				{
 					"command": "vstime.export",
 					"group": "navigation",
-					"when": "view == today || view == thisweek"
+					"when": "view == today"
+				},
+				{
+					"command": "vstime.export",
+					"group": "navigation",
+					"when": "view == yesterday"
+				},
+				{
+					"command": "vstime.export",
+					"group": "navigation",
+					"when": "view == thisweek"
 				}
 			]
 		}
