@@ -8,6 +8,9 @@ All notable changes to the "vstime" extension will be documented in this file.
 
 ## 0.3.2
 - Adding functionality to open the timeing information file via vstime: Open and ability to clear log file via vstime: Reset
+
+## 0.3.7
+- Adding a yesterday panel to show a report for one day prior
   
 ## [Not released]
 ### 0.0.2
