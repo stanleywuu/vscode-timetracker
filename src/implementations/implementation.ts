@@ -17,6 +17,7 @@ export async function test () {
     console.log(vscode.env.appName);
     console.log(vscode.env.appRoot);
     const config = vscode.workspace.getConfiguration("vstime");
+    const filename = config.get("filename");
     
     fs.writeFileSync(filePath(), "[]");
 }
@@ -46,7 +47,7 @@ export async function load(): Promise<TimeTrackingResultItem[]> {
 }
 
 export async function open() {
-    vscode.window.showTextDocument(vscode.Uri.parse(storagePath));
+    vscode.window.showTextDocument(vscode.Uri.file(storagePath));
 }
 
 export async function reset() {
