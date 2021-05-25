@@ -65,6 +65,8 @@ function initializeTree(
     "vstime.refresh",
     (c) => {
       treeprovider.refresh();
+      weeklyTreeProvider.refresh();
+      yesterdayTreeProvider.refresh();
     }
   );
 

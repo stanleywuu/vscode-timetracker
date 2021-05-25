@@ -11,6 +11,10 @@ All notable changes to the "vstime" extension will be documented in this file.
 
 ## 0.3.7
 - Adding a yesterday panel to show a report for one day prior
+
+## 0.3.9
+- Fixed an issue with refresh, refresh will refresh all panels
+  
   
 ## [Not released]
 ### 0.0.2
