@@ -143,5 +143,14 @@ function initializeStatusBar(
   context.subscriptions.push(statusBarItem);
   statusBarItem.show();
 
+  const stopBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Left, 2
+  );
+  stopBarItem.text = "End Timer";
+  stopBarItem.command = "vstime.stop";
+  stopBarItem.color = "#DEADBE";
+  context.subscriptions.push(stopBarItem);
+  stopBarItem.show();
+
   return statusBarItem;
 }

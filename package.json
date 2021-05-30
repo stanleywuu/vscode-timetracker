@@ -18,7 +18,7 @@
 		"type": "git",
 		"url": "https://github.com/stanleywuu/vscode-timetracker.git"
 	},
-	"version": "0.3.9",
+	"version": "0.4.0",
 	"engines": {
 		"vscode": "^1.50.0"
 	},
@@ -30,6 +30,16 @@
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"configuration":[{
+			"title": "VS Time",
+			"properties": {
+				"vstime.logfull":{
+					"type":"boolean",
+					"default": true,
+					"description": "Verbosely track time spent in each file"
+				}
+			}
+		}],
 		"commands": [
 			{
 				"command": "vstime.test",

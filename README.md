@@ -14,6 +14,11 @@ The extension is best for people who spends a lot of time in Visual Studio Code
 
 ![Demo](images/demo.gif)
 
+## Configuration
+* By going to Settings > Extensions > VS Time, you will see a bunch of configuration
+* Available configuration
+  * Logfull: On by default, meaning verbose logging including how much time you spent in each file is tracked.  
+
 ## How to use
 * Ctrl + Shift + P and use the following commands
 * Start Tracking
@@ -38,4 +43,3 @@ Tracking time helps you by:
 ## Known Issues
 * Records are global, which means they are not workspace specific
 * Currently there is no roll over, the log file grows indefinitely
-* Open Log file command doesn't work on Windows, will address soon

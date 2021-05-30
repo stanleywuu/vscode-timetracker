@@ -14,6 +14,10 @@ All notable changes to the "vstime" extension will be documented in this file.
 
 ## 0.3.9
 - Fixed an issue with refresh, refresh will refresh all panels
+
+## 0.4.0
+- Adding an UI button to stop timer
+- Adding a configuration option to turn off verbose tracking
   
   
 ## [Not released]

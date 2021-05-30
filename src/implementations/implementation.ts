@@ -67,6 +67,7 @@ export class Tracker {
   private logs: string[];
 
   isTracking: boolean;
+  private logFull: boolean;
 
   constructor(statusItem: vscode.StatusBarItem) {
     this.statusItem = statusItem;
@@ -77,6 +78,9 @@ export class Tracker {
     this.logs = [];
 
     this.isTracking = false;
+
+    const config = vscode.workspace.getConfiguration("vstime");
+    this.logFull = config.get("logfull") ?? true;
   }
 
   get currentProgress() : TimeTrackingResultItem[]{
@@ -142,7 +146,7 @@ export class Tracker {
     this.statusItem.command = "vstime.start";
     this.statusItem.text = "Timer Off";
     // log to file
-    const values = this.getBreakdownInfo();
+    const values = this.logFull ? this.getBreakdownInfo() : [];
 
     const final: TimeTrackingResultItem = {
       date: getToday().getTime(),
