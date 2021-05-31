@@ -59,6 +59,7 @@ export async function reset() {
 
 export class Tracker {
   private statusItem: vscode.StatusBarItem;
+  private stopStatusItem: vscode.StatusBarItem;
   private timerId: NodeJS.Timeout | null;
   private current: TrackerValue;
   private trackedFiles: KeyNumberPair;
@@ -69,7 +70,10 @@ export class Tracker {
   isTracking: boolean;
   private logFull: boolean;
 
-  constructor(statusItem: vscode.StatusBarItem) {
+  constructor(statusItem: vscode.StatusBarItem,
+    stopStatusItem: vscode.StatusBarItem) {
+
+    this.stopStatusItem = stopStatusItem;
     this.statusItem = statusItem;
     this.timerId = null;
     this.currentFile = "";
@@ -81,6 +85,8 @@ export class Tracker {
 
     const config = vscode.workspace.getConfiguration("vstime");
     this.logFull = config.get("logfull") ?? true;
+
+    stopStatusItem.hide();
   }
 
   get currentProgress() : TimeTrackingResultItem[]{
@@ -107,6 +113,8 @@ export class Tracker {
     this.reset();
     this.start();
     this.trackCurrentFile();
+
+    this.stopStatusItem.show();
   }
 
   resumeTracker() {
@@ -136,6 +144,7 @@ export class Tracker {
   async stopTracker(): Promise<TimeTrackingResultItem> {
 
     this.stopTimer();
+    this.stopStatusItem.show();
 
     this.isTracking = false;
     const finalComment = await vscode.window.showInputBox({
@@ -156,8 +165,6 @@ export class Tracker {
       breakdowns: values,
       logs: this.logs,
     };
-
-    console.log(final);
 
     return final;
   }
@@ -227,7 +234,7 @@ export class Tracker {
 
 export class EmptyTracker extends Tracker{
   constructor() {
-    super(vscode.window.createStatusBarItem());
+    super(vscode.window.createStatusBarItem(), vscode.window.createStatusBarItem());
   }
 }
 

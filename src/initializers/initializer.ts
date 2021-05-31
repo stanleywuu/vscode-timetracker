@@ -94,8 +94,8 @@ function initializeContextCommands(context: vscode.ExtensionContext) {
 }
 
 function initializeTracker(context: vscode.ExtensionContext): impl.Tracker {
-  const statusBar = initializeStatusBar(context);
-  const tracker = new impl.Tracker(statusBar);
+  const [statusBar, stopBarItem] = initializeStatusBar(context);
+  const tracker = new impl.Tracker(statusBar, stopBarItem);
 
   let trackStart = vscode.commands.registerCommand("vstime.start", (p) => {
     tracker.startTracker();
@@ -132,7 +132,7 @@ function initializeTracker(context: vscode.ExtensionContext): impl.Tracker {
 
 function initializeStatusBar(
   context: vscode.ExtensionContext
-): vscode.StatusBarItem {
+): vscode.StatusBarItem[] {
   const statusBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left,
     3
@@ -146,11 +146,11 @@ function initializeStatusBar(
   const stopBarItem = vscode.window.createStatusBarItem(
     vscode.StatusBarAlignment.Left, 2
   );
-  stopBarItem.text = "End Timer";
+  stopBarItem.text = "\u25A0\u25A0";
   stopBarItem.command = "vstime.stop";
   stopBarItem.color = "#DEADBE";
   context.subscriptions.push(stopBarItem);
   stopBarItem.show();
 
-  return statusBarItem;
+  return [statusBarItem, stopBarItem];
 }
